@@ -1,10 +1,11 @@
 from skimage.io import imread
 from skimage.util import random_noise, view_as_windows
+from scipy.signal import convolve2d as conv2
 import numpy as np
 import glob
 
 
-def read_imgs(file_paths, imgs_index, noise_var, patch_size, patch_step):
+def read_imgs(file_paths, imgs_index, noise_var, blur_kernel, patch_size, patch_step):
     result = []
     result_noise = []
     result_imgs = None
@@ -26,9 +27,12 @@ def read_imgs(file_paths, imgs_index, noise_var, patch_size, patch_step):
     for i in file_paths:
         img = imread(i, as_gray=True)
         img = img.astype(np.float64)
-        img = normalization(img)
 
-        img_noise = random_noise(img, mode='gaussian', mean=0, var=noise_var)
+        img_noise = conv2(img, blur_kernel, mode='same')
+        img_noise = random_noise(img_noise, mode='gaussian', mean=0, var=noise_var)
+
+        img = normalization(img)
+        img_noise = normalization(img_noise)
 
         if count == imgs_index:
             result_imgs = img
