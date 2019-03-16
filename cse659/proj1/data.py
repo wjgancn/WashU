@@ -5,7 +5,7 @@ import numpy as np
 import glob
 
 
-def read_imgs(file_paths, noise_var, blur_kernel, patch_size, patch_step):
+def read_imgs(file_paths, noise_var, blur_kernel, patch_size, patch_step, is_patch=True, is_blur=True):
     result = []
     result_noise = []
 
@@ -26,14 +26,18 @@ def read_imgs(file_paths, noise_var, blur_kernel, patch_size, patch_step):
         img = imread(i, as_gray=True)
         img = img.astype(np.float64)
 
-        img_noise = conv2(img, blur_kernel, mode='same')
+        if is_blur:
+            img_noise = conv2(img, blur_kernel, mode='same')
+        else:
+            img_noise = img
         img_noise = random_noise(img_noise, mode='gaussian', mean=0, var=noise_var)
 
         img = normalization(img)
         img_noise = normalization(img_noise)
 
-        img = patch(img)
-        img_noise = patch(img_noise)
+        if is_patch:
+            img = patch(img)
+            img_noise = patch(img_noise)
 
         result.append(img)
         result_noise.append(img_noise)

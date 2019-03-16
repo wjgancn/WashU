@@ -12,6 +12,8 @@ class TFBase(object):
         self.x = tf.placeholder(dtype=tf.float64, shape=input_shape)
         self.y_gt = tf.placeholder(dtype=tf.float64, shape=output_shape)
         self.y_output = self.get_net_output()
+        self.is_learned = tf.placeholder(tf.bool)  # Only for Batch Normalization Layer
+        self.dropout_rate = tf.placeholder(tf.float32)  # Only for Drop Out Layer
 
         self.loss = self.get_loss()
         self.train_op = self.get_train_op()
@@ -29,6 +31,36 @@ class TFBase(object):
 
     def get_loss(self):
         return 0
+
+    def predict(self, x, batch_size, model_path):
+
+        pre = np.zeros(shape=x.shape, dtype=np.float64)
+
+        gpu_options = tf.GPUOptions(allow_growth=True)
+        with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
+
+            TFTrainer.restore_model(sess=sess, path=model_path)
+
+            size = x.shape[0]
+            if size > 1:
+                index = TFTrainer.make_batches(size=size, batch_size=batch_size)
+
+                for batch, (batch_start, batch_end) in enumerate(index):
+                    x_batch = x[batch_start:batch_end]
+
+                    pre[batch_start:batch_end] = sess.run(self.y_output, feed_dict={self.x: x_batch})
+
+                    verbose_info = "[Info] Prediction Output: Batch = [%d]" % (batch + 1)
+                    print(verbose_info)
+
+            else:
+                pre = sess.run(self.y_output, feed_dict={self.x: x})
+
+        return pre
+
+    @staticmethod
+    def to_mat(data, name, path):
+        sio.savemat(path + name + '.mat', {name: data})
 
 
 class TFTrainer(object):
