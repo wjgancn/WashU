@@ -30,14 +30,20 @@ def read_imgs(file_paths, noise_var, blur_kernel, patch_size, patch_step, is_pat
             img_noise = conv2(img, blur_kernel, mode='same')
         else:
             img_noise = img
-        img_noise = random_noise(img_noise, mode='gaussian', mean=0, var=noise_var)
 
-        img = normalization(img)
-        img_noise = normalization(img_noise)
+        img_noise = random_noise(img_noise, mode='gaussian', mean=0, var=noise_var)
 
         if is_patch:
             img = patch(img)
             img_noise = patch(img_noise)
+
+            for patches in range(img.shape[0]):
+                img[patches, :, :] = normalization(img[patches, :, :])
+                img_noise[patches, :, :] = normalization(img_noise[patches, :, :])
+
+        else:
+            img = normalization(img)
+            img_noise = normalization(img_noise)
 
         result.append(img)
         result_noise.append(img_noise)
@@ -72,6 +78,7 @@ def normalization(imgs):
 
     if imgs.shape.__len__() == 2:
         imgs -= np.amin(imgs[:, :])
-        imgs /= np.amax(imgs[:, :])
+        if np.amax(imgs[:, :]) != 0:
+            imgs /= np.amax(imgs[:, :])
 
     return imgs

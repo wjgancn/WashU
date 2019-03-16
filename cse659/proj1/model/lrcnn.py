@@ -44,9 +44,9 @@ class Net(TFBase):
 
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
         for i in range(x.shape[0]):
-            x_batch = np.expand_dims(x[i], 0)
+            x_batch = np.squeeze(x[i], -1)
 
-            kt_y = conv2d(np.squeeze(x[i], -1), self.kernel.transpose(), mode='same')
+            kt_y = conv2d(x_batch, self.kernel.transpose(), mode='same')
 
             u = 0.5
 
@@ -54,7 +54,7 @@ class Net(TFBase):
 
             fre_k = Net.kernel_pad(self.kernel, self.input_shape)
             fre_k = np.fft.fft2(fre_k)
-            fre_k = u * np.square(np.abs(fre_k)) + 1
+            fre_k = 2*u + np.square(np.abs(fre_k))
 
             result = x_batch
 
@@ -62,26 +62,27 @@ class Net(TFBase):
 
                 result_last = result
 
-                z = self.predict(result, 1, model_path=model_path)
-                z = np.squeeze(z, 0)
-                z = np.squeeze(z, -1)
-
-                result = kt_y * u + z
-                result = np.fft.ifft2(result)
+                result = kt_y + 2*u*result
+                result = np.fft.fft2(result)
                 result = result / fre_k
                 result = np.fft.ifft2(result)
                 result = np.abs(result)
 
+                result = np.expand_dims(result, 0)
+                result = np.expand_dims(result, -1)
+                result = self.predict(result, 1, model_path=model_path)
+
+                result = np.squeeze(result, 0)
+                result = np.squeeze(result, -1)
+
                 tol_ = np.mean(np.square(result - result_last))
+                print(tol_)
                 if tol_ < tol_max:
                     verbose_info = "[Info] Prediction Output: Break in [%d] Iter" % (iter_ + 1)
                     print(verbose_info)
-                    result = np.expand_dims(result, -1)
                     break
 
-                result = np.expand_dims(result, 0)
-                result = np.expand_dims(result, -1)
-
+            result = np.expand_dims(result, -1)
             pre[i] = result
 
             verbose_info = "[Info] Prediction Output: Batch = [%d]" % (i + 1)
