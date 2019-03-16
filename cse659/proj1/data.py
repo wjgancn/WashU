@@ -5,11 +5,9 @@ import numpy as np
 import glob
 
 
-def read_imgs(file_paths, imgs_index, noise_var, blur_kernel, patch_size, patch_step):
+def read_imgs(file_paths, noise_var, blur_kernel, patch_size, patch_step):
     result = []
     result_noise = []
-    result_imgs = None
-    result_noise_imgs = None
 
     def patch(input_):
         result_ = view_as_windows(input_, (patch_size, patch_size),  patch_step)
@@ -34,15 +32,6 @@ def read_imgs(file_paths, imgs_index, noise_var, blur_kernel, patch_size, patch_
         img = normalization(img)
         img_noise = normalization(img_noise)
 
-        if count == imgs_index:
-            result_imgs = img
-            result_noise_imgs = img_noise
-
-            result_imgs = np.expand_dims(result_imgs, 0)
-            result_imgs = np.expand_dims(result_imgs, -1)
-            result_noise_imgs = np.expand_dims(result_noise_imgs, 0)
-            result_noise_imgs = np.expand_dims(result_noise_imgs, -1)
-
         img = patch(img)
         img_noise = patch(img_noise)
 
@@ -58,7 +47,7 @@ def read_imgs(file_paths, imgs_index, noise_var, blur_kernel, patch_size, patch_
     result_noise = np.expand_dims(np.concatenate(result_noise, 0), -1)
     print("[Info] Output Shape: ", result.shape)
 
-    return result_noise, result, result_noise_imgs, result_imgs
+    return result_noise, result
 
 
 def normalization(imgs):

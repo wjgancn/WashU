@@ -6,7 +6,32 @@ from tensorboardX import SummaryWriter
 import scipy.io as sio
 
 
-class Trainer(object):
+# noinspection PyMethodMayBeStatic
+class TFBase(object):
+    def __init__(self, input_shape, output_shape):
+        self.x = tf.placeholder(dtype=tf.float64, shape=input_shape)
+        self.y_gt = tf.placeholder(dtype=tf.float64, shape=output_shape)
+        self.y_output = self.get_net_output()
+
+        self.loss = self.get_loss()
+        self.train_op = self.get_train_op()
+
+        self.metrics, self.metrics_name = self.get_metrics()
+
+    def get_net_output(self):
+        return 0
+
+    def get_metrics(self):
+        return [0, 0]
+
+    def get_train_op(self):
+        return 0
+
+    def get_loss(self):
+        return 0
+
+
+class TFTrainer(object):
     def __init__(self, net, path, config_info, batch_size=32, train_epoch=100, save_epoch=20):
         """
 
@@ -21,8 +46,13 @@ class Trainer(object):
         new_folder(path)
         self.config_info = config_info
 
-    def run(self, train_x, train_y, valid_x, valid_y, train_x_imgs, train_y_imgs, valid_x_imgs, valid_y_imgs,
+    def run(self, train_x, train_y, valid_x, valid_y, train_imgs_index=np.array([0]), valid_imgs_index=np.array([0]),
             batch_verbose=True, epoch_verbose=True):
+
+        train_x_imgs = train_x[train_imgs_index]
+        train_y_imgs = train_y[train_imgs_index]
+        valid_x_imgs = valid_x[valid_imgs_index]
+        valid_y_imgs = valid_y[valid_imgs_index]
 
         ################
         # Set up shuffle index
@@ -42,7 +72,7 @@ class Trainer(object):
 
         batch_verbose_times = None
         if batch_verbose:
-            batch_verbose_times = int(num_batches_train / 20)
+            batch_verbose_times = int(num_batches_train / 10)
 
         ################
         # Initial writer
