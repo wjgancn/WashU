@@ -1,4 +1,4 @@
-Concrete Problem Set or details can be seen in `report.pdf` file in each homework folder.
+Concrete `problem and details` can be seen in `report.pdf` file in each homework folder. Carefully, I am not sure it's the correct solution. : )
 
 ## HW1
 
@@ -34,7 +34,7 @@ Problem about multiple face point data.
 
 ### Prob1-(a)
 
-Solve a face data $x_u$ that can link it with all other $x_i$ with a affine transform:
+Solve the optimal face data $x_u$ that can link it with all other $x_i$ with a affine transform:
 
 ![](./hw3/img/equ_prob1.png)
 
@@ -44,7 +44,7 @@ In the figure, the "red face" is the first original data used to be a reference.
 
 ### Prob1-(b)
 
-Similar with solving eigenface. To express faces with just one the eigenvector obtained by PCA. $v_1$, $v_2$ and $v_3$ are three eigenvectors related with the three largest eigenvalues. To visualize it, to solve mean and standard derivation of all reconstructed faces and plot two faces, which are ”mean plus standard derivation” and ”mean minus standard derivation”. The ﬁgure is shown as follow.
+Similar with solving eigenface. To express faces with just one the eigenvector obtained by PCA. $v_1$, $v_2$ and $v_3$ are three eigenvectors related with the three largest eigenvalues. To visualize it, to solve mean and standard derivation of all reconstructed faces and plot two faces, which are ”mean plus standard derivation” and ”mean minus standard derivation”. 
 
 ![](./hw3/img/res_prob2.png)
 
