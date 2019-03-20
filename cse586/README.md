@@ -1,8 +1,6 @@
-Concrete `problem and details` can be seen in `report.pdf` file in each homework folder. Carefully, I am not sure it's the correct solution. : )
+Concrete `problem and details` can be seen in `report.pdf` file in each homework folder. 
 
-- [HW1](##hw-1)
-- HW2 #2
-- HW3 #3
+Carefully, I am not sure it's the correct solution. : )
 
 ## HW 1
 
@@ -29,6 +27,7 @@ Implement of Euler' s Method.
 #### Prob 2
 
 Implement of diffeomorphic image registration by Geodesic Shooting.
+Update: Mar-20-2019 Looks like my answer is not correct. : (
 
 ![](./hw2/img/res_prob2.png)
 
