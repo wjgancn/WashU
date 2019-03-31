@@ -56,17 +56,24 @@ rec3_std = std(rec3, 0, 2);
 figure(1)
 drawFaceParts( -reshape(rec1_mean + rec1_std, [width, height]), 'r-');
 drawFaceParts( -reshape(rec1_mean - rec1_std, [width, height]), 'k-');
+drawFaceParts( -reshape(rec1_mean, [width, height]), 'b-');
 axis off
 axis equal
 
 figure(2)
 drawFaceParts( -reshape(rec2_mean + rec2_std, [width, height]), 'r-');
 drawFaceParts( -reshape(rec2_mean - rec2_std, [width, height]), 'k-');
+drawFaceParts( -reshape(rec1_mean, [width, height]), 'b-');
 axis off
 axis equal
 
 figure(3)
 drawFaceParts( -reshape(rec3_mean + rec3_std, [width, height]), 'r-');
 drawFaceParts( -reshape(rec3_mean - rec3_std, [width, height]), 'k-');
+drawFaceParts( -reshape(rec1_mean, [width, height]), 'b-');
 axis off
 axis equal
+
+figure(4)
+plot(eigval(1:21));
+title("eigenvalue decay curve (Only should the first 21 eigenvalues)")

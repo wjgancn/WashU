@@ -37,7 +37,7 @@ Problem about multiple face point data.
 
 ### Prob1. (a)
 
-Solve the optimal face data $x_u$ that can link it with all other $x_i$ with a affine transform:
+Solve the optimal face data xu that can link it with all other xi with a affine transform:
 
 ![](./hw3/img/equ_prob1.png)
 
@@ -47,7 +47,7 @@ In the figure, the "red face" is the first original data used to be a reference.
 
 ### Prob1. (b)
 
-Similar with solving eigenface. To express faces with just one the eigenvector obtained by PCA. $v_1$, $v_2$ and $v_3$ are three eigenvectors related with the three largest eigenvalues. To visualize it, to solve mean and standard derivation of all reconstructed faces and plot two faces, which are ”mean plus standard derivation” and ”mean minus standard derivation”. 
+Similar with solving eigenface. To express faces with just one the eigenvector obtained by PCA. v1, v2 and v3 are three eigenvectors related with the three largest eigenvalues. To visualize it, to solve mean and standard derivation of all reconstructed faces and plot two faces, which are ”mean plus standard derivation” and ”mean minus standard derivation”. 
 
 ![](./hw3/img/res_prob2.png)
 
