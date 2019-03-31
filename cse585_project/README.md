@@ -12,5 +12,7 @@ The total flowchart is shown as:
 
 ## Experiment
 
+The noise image comes from mantual additive Gaussian distribution noise with zero-mean and 0.01 or 0.1 standard derivative.
+
 ![](./img/experiment.png)
 
