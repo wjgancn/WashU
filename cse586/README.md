@@ -51,3 +51,7 @@ Similar with solving eigenface. To express faces with just one the eigenvector o
 
 ![](./hw3/img/res_prob2.png)
 
+## HW4
+
+### Prob1: Autoencoder in Matlab API (Deep Learning Toolbox needed).
+### Prob2: Bayesian Logistic Regression Implement and test in classic `iris` dataset.
