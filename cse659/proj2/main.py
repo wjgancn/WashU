@@ -1,4 +1,4 @@
-from dataset import Facades
+from dataset import DataLoader
 import tensorflow.keras as keras
 import tensorflow as tf
 from method import generator, discriminator, CallBackFun
@@ -10,21 +10,14 @@ config.gpu_options.allow_growth = True
 tf.enable_eager_execution(config)
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "3"
-experiment_path = '/export/project/gan.weijie/tmp/'
+experiment_path = '/export/project/SAVE_PATH/'
 train_folder = 'apr28-photo2ce-128-par1'
-copy_code(src='/export/project/gan.weijie/tmp/proj2/', dst=experiment_path + train_folder + '/')
+copy_code(src='/export/project/CODE_PATH/', dst=experiment_path + train_folder + '/')
 
-# train_data = Facades(path_x='../cezanne2photo/trainA/', path_y='../cezanne2photo/trainB/', is_pair=False)
-# test_data = Facades(path_x='../cezanne2photo/testA/', path_y='../cezanne2photo/testB/', is_pair=False)
+train_data = DataLoader(path_x='../cezanne2photo/trainB/', path_y='../cezanne2photo/trainA/', is_pair=False)
+test_data = DataLoader(path_x='../cezanne2photo/testB/', path_y='../cezanne2photo/testA/', is_pair=False)
 
-train_data = Facades(path_x='../cezanne2photo/trainB/', path_y='../cezanne2photo/trainA/', is_pair=False)
-test_data = Facades(path_x='../cezanne2photo/testB/', path_y='../cezanne2photo/testA/', is_pair=False)
-
-# train_data = Facades(path_x='../facades/trainB/', path_y='../facades/trainA/', is_pair=True)
-# test_data = Facades(path_x='../facades/testB/', path_y='../facades/testA/', is_pair=True)
-# train_data = Facades(path_x='../facades/trainA/', path_y='../facades/trainB/', is_pair=False)
-# test_data = Facades(path_x='../facades/testA/', path_y='../facades/testB/', is_pair=False)
-
+# Different lr for generative network and discriminate network
 optimizer_dis = tf.train.AdamOptimizer(1e-6)
 optimizer_gen = tf.train.AdamOptimizer(1e-4)
 
@@ -65,21 +58,18 @@ for epoch in range(epoch_run):
         with tf.GradientTape() as gen_tape:
 
             loss_gen = loss_fn_mse(dis(gen_xy(x)), real_patch)
-            # loss_gen += 10 * loss_fn_mae(gen_xy(x), y)
             loss_gen += 1*(loss_fn_mae(gen_yx(gen_xy(x)), x) + loss_fn_mae(gen_xy(gen_yx(y)), y))
 
         grads_gen = gen_tape.gradient(loss_gen, gen_xy.variables + gen_yx.variables)
         optimizer_gen.apply_gradients(zip(grads_gen, gen_xy.variables + gen_yx.variables))
-        # grads_gen = gen_tape.gradient(loss_gen, gen_xy.variables)
-        # optimizer_gen.apply_gradients(zip(grads_gen, gen_xy.variables))
 
         logs = {'loss_gen': loss_gen, 'loss_dis': loss_dis}
         callback_fun.on_train_batch_end(logs)
         print('[Epoch %d Batch %d] [D Loss %.4f] [G Loss %.4f]' % (epoch, batch, loss_dis, loss_gen))
 
     callback_fun.on_epoch_end(epoch=epoch, gen_xy=gen_xy, gen_yx=gen_yx)
-    # callback_fun.on_epoch_end(epoch=epoch, gen_xy=gen_xy)
 
+    # Save Network
     if epoch % 20 == 0:
         gen_xy.save(filepath=experiment_path + train_folder + '/gen_xy.model.epoch%d.h5' % epoch)
         gen_yx.save(filepath=experiment_path + train_folder + '/gen_yx.model.epoch%d.h5' % epoch)

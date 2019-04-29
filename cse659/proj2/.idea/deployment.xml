@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="cig2" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="cig2">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/proj2" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="cigroup3-weijie">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_732" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="gan.weijie@cigserver3.seas.wustl.edu:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_59" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

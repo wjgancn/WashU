@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 
 
-class Facades(object):
+class DataLoader(object):
     def __init__(self, path_x, path_y, is_pair=False):
 
         dataset_x, self.dataset_len, img_dataset_x = self.path_to_dataset(path_x)
@@ -20,13 +20,13 @@ class Facades(object):
 
     @staticmethod
     def convert_to_imgs_fn(path_1, path_2):
-        return Facades.read_and_process(path_1), Facades.read_and_process(path_2)
+        return DataLoader.read_and_process(path_1), DataLoader.read_and_process(path_2)
 
     @staticmethod
     def path_to_dataset(file_path):
         file_list = tf.gfile.Glob(file_path + '*.jpg')
         file_list.sort()
-        # file_list = file_list[:60]
+
         dataset = tf.data.Dataset.from_tensor_slices(file_list)
         dataset_len = len(file_list)
 
