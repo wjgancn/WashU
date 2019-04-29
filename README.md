@@ -13,3 +13,4 @@
 
 - cse659: Advances in Computer Vision.
     - [Learning of Unrolled Optimization with Deep Priors.](https://github.com/wjgancn/WashU/tree/master/cse659/proj1)
+    - [Learning of Unpaired Image-to-Image GAN Method](https://github.com/wjgancn/WashU/tree/master/cse659/proj2)
